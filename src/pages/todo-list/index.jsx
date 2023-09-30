@@ -1,17 +1,20 @@
 import { useState } from "react";
 import { useAddTodo } from "../../hooks/useAddTodo";
+import { useGetTodo } from "../../hooks/useGetTodo";
 
 export const TodoList = () => {
   const { addTodo } = useAddTodo();
+  const { todoList } = useGetTodo();
 
   const [description, setDescription] = useState("");
   const [type, setType] = useState("priority");
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setDescription("");
     addTodo({
-      description: "new",
-      type: "expense",
+      description,
+      type,
     });
   };
 
@@ -56,7 +59,23 @@ export const TodoList = () => {
           </form>
         </div>
       </div>
-      <div className="added-list">Todo List</div>
+      <div className="added-list">
+        <h3>Todo List</h3>
+        <ul>
+          {todoList.map((todo) => {
+            const { description, type } = todo;
+
+            return (
+              <li>
+                <h4>{description}</h4>
+                <p>
+                  <label>{type}</label>
+                </p>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
     </>
   );
 };
